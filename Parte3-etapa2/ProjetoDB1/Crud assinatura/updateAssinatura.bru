@@ -1,0 +1,17 @@
+meta {
+  name: updateAssinatura
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:3333/assinatura/1926
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "status":"desativo"
+  }
+}

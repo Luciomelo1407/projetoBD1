@@ -1,9 +1,10 @@
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany} from '@adonisjs/lucid/orm'
 import Usuario from './usuario.js'
-import type {  HasOne } from '@adonisjs/lucid/types/relations' // Importação correta
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Assinatura from './assinatura.js'
 
 export default class Aluno extends BaseModel {
-  static table = 'aluno'
+  static table = 'academia.aluno'
 
   @column({ isPrimary: true })
   declare matricula: number
@@ -11,9 +12,16 @@ export default class Aluno extends BaseModel {
   @column()
   declare usuario_cpf: number
 
-  @hasOne(() => Usuario, {
-    foreignKey: 'cpf', // defaults to userId
+  @belongsTo(()=>Usuario,{
+    localKey:'cpf',
+    foreignKey:'usuario_cpf'
+  })
+  declare usuario:BelongsTo<typeof Usuario>
+
+  @hasMany(()=>Assinatura,{
+    foreignKey:'aluno_usuario_cpf',
     localKey: 'usuario_cpf'
   })
-  declare usaurio: HasOne<typeof Usuario>
+  declare assinatura:HasMany<typeof Assinatura>
+
 }

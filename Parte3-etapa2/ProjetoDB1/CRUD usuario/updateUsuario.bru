@@ -1,0 +1,22 @@
+meta {
+  name: updateUsuario
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3333/1926
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "telefone": ["123456789", "987654321"],
+    "datanascimento": "1990-01-01",
+    "email": "usuario@exemplo.com",
+    "senha": "senhaSegura123",
+    "primeironome": "Primeiro1 Nome1",
+    "sobrenome": "Sobrenome1"
+  }
+}
