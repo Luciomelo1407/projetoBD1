@@ -1,0 +1,21 @@
+meta {
+  name: Store PLano
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3333/plano
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "idplano":1,
+    "duracao":2,
+    "status":true,
+    "nome":"plano mestral",
+    "valor":80
+  }
+}

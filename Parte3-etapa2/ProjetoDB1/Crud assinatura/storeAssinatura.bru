@@ -1,0 +1,19 @@
+meta {
+  name: storeAssinatura
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3333/assinatura
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "status": "ativo",
+      "aluno_usuario_cpf": 1926,
+      "plano_idplano": 1
+  }
+}

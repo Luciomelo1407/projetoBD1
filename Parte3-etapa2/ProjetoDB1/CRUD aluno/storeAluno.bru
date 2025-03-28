@@ -1,0 +1,18 @@
+meta {
+  name: storeAluno
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3333/aluno
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "matricula": 59647,
+    "usuario_cpf": 1926
+  }
+}

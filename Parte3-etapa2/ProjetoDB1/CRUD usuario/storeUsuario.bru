@@ -1,0 +1,23 @@
+meta {
+  name: storeUsuario
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3333/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "cpf": 1926,
+    "telefone": ["123456789", "987654321"],
+    "datanascimento": "1990-01-01",
+    "email": "gui@gmail.com",
+    "senha": "senhaSegura123",
+    "primeironome": "gui",
+    "sobrenome": "guinaldo"
+  }
+}
