@@ -2,6 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Usuario from '#models/usuario';
 import Aluno from '#models/aluno';
 import Assinatura from '#models/assinatura';
+import app from '@adonisjs/core/services/app'
+const db = await app.container.make('lucid.db')
 
 export default class UsuariosController {
 
@@ -14,22 +16,23 @@ export default class UsuariosController {
     }
   }
 
-  async store({request, response}:HttpContext){
-    try{
-      const usuario = new Usuario()
-      usuario.cpf = request.body().cpf
-      usuario.telefone = request.body().telefone
-      usuario.datanascimento = request.body().datanascimento
-      usuario.email = request.body().email
-      usuario.senha = request.body().senha
-      usuario.primeironome = request.body().primeironome
-      usuario.sobrenome = request.body().sobrenome
-      await usuario.save()
-      return response.status(201).json(usuario)
-    }catch(error){
-      return response.status(error.status || 409).json(error)
-    }
-  }
+  // async store({request, response}:HttpContext){
+  //
+  //   try{
+  //     const usuario = new Usuario()
+  //     usuario.cpf = request.body().cpf
+  //     usuario.telefone = request.body().telefone
+  //     usuario.datanascimento = request.body().datanascimento
+  //     usuario.email = request.body().email
+  //     usuario.senha = request.body().senha
+  //     usuario.primeironome = request.body().primeironome
+  //     usuario.sobrenome = request.body().sobrenome
+  //     await usuario.save()
+  //     return response.status(201).json(usuario)
+  //   }catch(error){
+  //     return response.status(error.status || 409).json(error)
+  //   }
+  // }
 
   async update({params, request, response}:HttpContext){
     try{
@@ -59,7 +62,33 @@ export default class UsuariosController {
       response.json(error)
     }
 
+ }
+
+  async store({ request, response }: HttpContext) {
+    const trx = await db.transaction() //transaction
+
+    try {
+      const usuarioData = request.only([
+        'cpf', 'telefone', 'datanascimento',
+        'email', 'senha', 'primeironome', 'sobrenome'
+      ])
+
+      const usuario = await Usuario.create(usuarioData, { client: trx })
+
+      // Se precisar criar registros relacionados:
+      // await Aluno.create({ ... }, { client: trx })
+
+      await trx.commit()
+      return response.status(201).json(usuario)
+    } catch (error) {
+      await trx.rollback()
+      return response.status(409).json(error)
+    }
   }
+
+
+
+
 
 
 }
